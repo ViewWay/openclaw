@@ -4,7 +4,6 @@ import {
   FLAG_TERMINATOR,
   isValueToken,
 } from "../infra/cli-root-options.js";
-import { normalizeCommand, normalizeOption } from "./program/command-aliases.js";
 
 // 帮助标志集合 / Help flags set
 const HELP_FLAGS = new Set(["-h", "--help"]);
@@ -49,9 +48,7 @@ export function hasFlag(argv: string[], name: string): boolean {
     if (arg === FLAG_TERMINATOR) {
       break;
     }
-    // 应用选项规范化 / Apply option normalization
-    const normalizedArg = normalizeOption(arg);
-    if (normalizedArg === name) {
+    if (arg === name) {
       return true;
     }
   }
@@ -140,14 +137,12 @@ export function getFlagValue(argv: string[], name: string): string | null | unde
     if (arg === FLAG_TERMINATOR) {
       break;
     }
-    // 应用选项规范化 / Apply option normalization
-    const normalizedArg = normalizeOption(arg);
-    if (normalizedArg === name) {
+    if (arg === name) {
       const next = args[i + 1];
       return isValueToken(next) ? next : null;
     }
-    if (normalizedArg.startsWith(`${name}=`)) {
-      const value = normalizedArg.slice(name.length + 1);
+    if (arg.startsWith(`${name}=`)) {
+      const value = arg.slice(name.length + 1);
       return value ? value : null;
     }
   }
@@ -224,8 +219,7 @@ function getCommandPathInternal(
     if (arg.startsWith("-")) {
       continue;
     }
-    // 应用命令规范化 / Apply command normalization
-    path.push(normalizeCommand(arg));
+    path.push(arg);
     if (path.length >= depth) {
       break;
     }
@@ -240,8 +234,7 @@ function getCommandPathInternal(
  */
 export function getPrimaryCommand(argv: string[]): string | null {
   const [primary] = getCommandPathWithRootOptions(argv, 1);
-  // 应用命令规范化 / Apply command normalization
-  return primary ? normalizeCommand(primary) : null;
+  return primary ?? null;
 }
 
 type CommandPositionalsParseOptions = {
