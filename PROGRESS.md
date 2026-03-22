@@ -123,13 +123,10 @@
 --帮助 -> --help
 ```
 
-## 待完成的工作
+## 下一步
 
-### Phase 2: 安全增强
-
-- [ ] Token 过期机制
-- [ ] 2FA 支持
-- [ ] RBAC 权限系统
+- 实现中优先级接口类 (IC44 PppSetup, IC46 SmtpSetup, IC47 GsmDiagnostic
+- IC48 IPv6Setup)
 
 ## 测试建议
 
