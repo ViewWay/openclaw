@@ -114,7 +114,7 @@ export function normalizeOption(option: string): string {
 export function normalizeArgs(args: string[]): string[] {
   return args.map((arg, index) => {
     // 前两个参数是 node 路径和程序路径，不处理 / First two args are node binary and program path, skip them
-    if (index <= 1) {
+    if (index < 2) {
       return arg;
     }
 
